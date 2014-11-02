@@ -12,6 +12,7 @@ public class Character : MonoBehaviour {
 	int DEF;
 	int MOV;
 	int EVD;
+	int ACC = 1;
 	int PointCost;
 
 	GameObject carryingTile = null;
@@ -67,4 +68,34 @@ public class Character : MonoBehaviour {
 	void Update () {
 	
 	}
+	public int returnStats(int statIndex){
+		switch(statIndex){
+		case(0):
+			return HP;
+			break;
+		case(1):
+			return ATK;
+			break;
+		case(2):
+			return DEF;
+			break;
+		case(3):
+			return MOV;
+			break;
+		case(4):
+			return EVD;
+			break;
+		case(5):
+			return ACC;
+			break;
+		case(6):
+			return PointCost;
+			break;
+		default:
+			return 0;
+			break;
+		}
+
+	}
+
 }

@@ -5,7 +5,7 @@ public class GuiElements : MonoBehaviour {
 
 	Rect characterDataBox = new Rect (0,0,Screen.width/6,Screen.height);
 	bool displayCharacterData = false;
-	GameObject selectedCharacter;
+	public GameObject selectedCharacter;
 
 	// Use this for initialization
 	void Start () {
@@ -34,9 +34,24 @@ public class GuiElements : MonoBehaviour {
 				break;
 			}
 			if(touchMoved == false){
+				RaycastHit2D rayHit = Physics2D.Raycast(startPos,-Vector2.up);
+
+				if(rayHit.collider!=null){
+					GameObject hitObject = rayHit.collider.gameObject;
+					if(hitObject.tag=="Tile"){
+						if(hitObject.GetComponent<Tile>().returnCarriedUnit()!=null){
+							selectedCharacter = hitObject.GetComponent<Tile>().returnCarriedUnit();
+						}
+					}
+				}
 				Vector3 touchWorldPosition = Camera.main.WorldToScreenPoint(startPos);
-				RaycastHit2D rayHit = Physics2D.OverlapPoint(touchWorldPosition);
+				//RaycastHit2D rayHit = Physics2D.OverlapPoint(touchWorldPosition);
 			}
+		}
+		if(selectedCharacter==null){
+			displayCharacterData = false;
+		} else {
+			displayCharacterData = true;
 		}
 	
 	}
@@ -48,6 +63,15 @@ public class GuiElements : MonoBehaviour {
 	}
 
 	void CharacterDataFunction(int id){
-
+		GUILayout.BeginVertical();
+		GUILayout.Label(selectedCharacter.name);
+		//GUILayout.Label("Texture/image");
+		GUILayout.Label("HP : " + selectedCharacter.GetComponent<Character>().returnStats(0).ToString());
+		GUILayout.Label("ATK : " +selectedCharacter.GetComponent<Character>().returnStats(1).ToString());
+		GUILayout.Label("DEF : " +selectedCharacter.GetComponent<Character>().returnStats(2).ToString());
+		GUILayout.Label("MOV : " +selectedCharacter.GetComponent<Character>().returnStats(3).ToString());
+		GUILayout.Label("EVD : " +selectedCharacter.GetComponent<Character>().returnStats(4).ToString());
+		GUILayout.Label("ACC : " +selectedCharacter.GetComponent<Character>().returnStats(5).ToString());
+		GUILayout.EndVertical();
 	}
 }

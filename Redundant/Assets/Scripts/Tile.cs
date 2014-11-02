@@ -10,7 +10,7 @@ public class Tile : MonoBehaviour {
 	public Tile connection4;
 
 	bool carryingUnit = false;
-	GameObject carriedUnit = null;
+	public GameObject carriedUnit = null;
 
 	//public int tileType;
 	public enum TileType{Water,Structure,Cobble,Field,Forest};
@@ -55,5 +55,9 @@ public class Tile : MonoBehaviour {
 			}
 		}
 		return(tilesInRange);
+	}
+
+	public GameObject returnCarriedUnit(){
+		return carriedUnit;
 	}
 }
