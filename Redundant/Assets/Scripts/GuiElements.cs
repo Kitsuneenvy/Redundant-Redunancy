@@ -6,6 +6,7 @@ public class GuiElements : MonoBehaviour {
 	Rect characterDataBox = new Rect (0,0,Screen.width/6,Screen.height);
 	bool displayCharacterData = false;
 	public GameObject selectedCharacter;
+	public GUISkin usedSkin;
 
 	// Use this for initialization
 	void Start () {
@@ -57,6 +58,7 @@ public class GuiElements : MonoBehaviour {
 	}
 
 	void OnGUI(){
+		GUI.skin = usedSkin;
 		if(displayCharacterData == true){
 			characterDataBox = GUILayout.Window(0,characterDataBox,CharacterDataFunction,"");
 		}
