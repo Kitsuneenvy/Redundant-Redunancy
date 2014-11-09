@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Character : MonoBehaviour {
 
@@ -14,6 +15,7 @@ public class Character : MonoBehaviour {
 	int EVD;
 	int ACC = 1;
 	int PointCost;
+	int currentMov;
 
 	GameObject carryingTile = null;
 
@@ -68,6 +70,15 @@ public class Character : MonoBehaviour {
 	void Update () {
 	
 	}
+
+
+	public void move(List<GameObject> tileTargets){
+		Vector3.MoveTowards(this.transform.position,tileTargets[0].transform.position,1);
+		carryingTile.GetComponent<Tile>().carriedUnit = null;
+		tileTargets[0].GetComponent<Tile>().carriedUnit = this.gameObject;
+		carryingTile = tileTargets[0];
+	}
+
 	public int returnStats(int statIndex){
 		switch(statIndex){
 		case(0):

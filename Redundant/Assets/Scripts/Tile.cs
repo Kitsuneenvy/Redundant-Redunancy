@@ -10,6 +10,7 @@ public class Tile : MonoBehaviour {
 	public Tile connection4;
 
 	bool carryingUnit = false;
+	bool characterActive = false;
 	public GameObject carriedUnit = null;
 
 	//public int tileType;
@@ -24,6 +25,64 @@ public class Tile : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(Input.touchCount == 1){
+			Touch touchZero = Input.GetTouch(0);
+			Vector2 startPos = Vector2.zero;
+			Vector2 direction = Vector2.zero;
+			bool touchMoved = false;
+			
+			switch(touchZero.phase){
+			case(TouchPhase.Began):
+				startPos = touchZero.position;
+				break;
+			case(TouchPhase.Moved):
+				direction = touchZero.position - startPos;
+				break;
+			case(TouchPhase.Ended):
+				if(direction != Vector2.zero){
+					touchMoved = true;
+				}
+				break;
+			}
+			if(touchMoved == false){
+				if(characterActive ==false){
+					RaycastHit2D rayHit = Physics2D.Raycast(startPos,-Vector2.up);
+					
+					if(rayHit.collider!=null){
+						GameObject hitObject = rayHit.collider.gameObject;
+						if(hitObject.gameObject == this.gameObject){
+							if(carriedUnit!=null){
+								characterActive = true;
+								GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().activeUnit = carriedUnit;
+								foreach(GameObject reachableTile in DetermineMovementRange(carriedUnit.GetComponent<Character>().returnStats(3))){
+									if(reachableTile.GetComponent<Tile>().carryingUnit == false){
+										//change sprite to moveable
+									} else {
+										//change sprite to attack
+									}
+								}
+							}
+						}
+					}
+					Vector3 touchWorldPosition = Camera.main.WorldToScreenPoint(startPos);
+					//RaycastHit2D rayHit = Physics2D.OverlapPoint(touchWorldPosition);
+				} else {
+					RaycastHit2D rayHit = Physics2D.Raycast(startPos,-Vector2.up);
+					
+					if(rayHit.collider!=null){
+						GameObject hitObject = rayHit.collider.gameObject;
+						if(hitObject.gameObject == this.gameObject){
+							List<GameObject> tiles = new List<GameObject>();
+							tiles.Add(this.gameObject);
+							if(carriedUnit==null){
+								GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().activeUnit.GetComponent<Character>().move(tiles);
+
+							}
+						}
+					}
+				}
+			}
+		}
 	
 	}
 
