@@ -49,6 +49,8 @@ public class Tile : MonoBehaviour {
 					RaycastHit2D rayHit = Physics2D.Raycast(startPos,-Vector2.up);
 					
 					if(rayHit.collider!=null){
+						
+						GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().resetTiles(Color.green);
 						GameObject hitObject = rayHit.collider.gameObject;
 						if(hitObject.gameObject == this.gameObject){
 							if(carriedUnit!=null){
@@ -57,7 +59,9 @@ public class Tile : MonoBehaviour {
 								foreach(GameObject reachableTile in DetermineMovementRange(carriedUnit.GetComponent<Character>().returnStats(3))){
 									if(reachableTile.GetComponent<Tile>().carryingUnit == false){
 										//change sprite to moveable
+										reachableTile.GetComponent<SpriteRenderer>().color = Color.blue;
 									} else {
+										reachableTile.GetComponent<SpriteRenderer>().color = Color.red;
 										//change sprite to attack
 									}
 								}
@@ -79,6 +83,9 @@ public class Tile : MonoBehaviour {
 
 							}
 						}
+						characterActive = false;
+						GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().activeUnit = null;
+						GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().resetTiles(Color.white);
 					}
 				}
 			}
